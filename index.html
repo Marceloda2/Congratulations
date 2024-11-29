@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Congratulations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: black;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        #lyrics-box {
+            text-align: center;
+            max-width: 600px;
+        }
+        .highlight-sex {
+            color: red;
+        }
+        .highlight-blue {
+            color: blue;
+        }
+    </style>
+</head>
+<body>
+    <div id="lyrics-box">Loading...</div>
+
+    <script>
+        const lyricsBox = document.getElementById("lyrics-box");
+
+        fetch("/lyrics")
+            .then((response) => response.json())
+            .then((lyrics) => {
+                let startTime = new Date().getTime();
+                lyrics.forEach((lyric) => {
+                    setTimeout(() => {
+                        let text = lyric.text
+                            .replace(/sex/gi, '<span class="highlight-sex">sex</span>')
+                            .replace(/blue/gi, '<span class="highlight-blue">blue</span>');
+                        lyricsBox.innerHTML = text;
+                    }, lyric.time * 1000);
+                });
+            });
+    </script>
+</body>
+</html>
