@@ -29,23 +29,31 @@
 </head>
 <body>
     <div id="lyrics-box">Loading...</div>
+    <audio id="audio" src="Mac Miller - Congratulations (feat. Bilal).mp3" autoplay></audio>
 
     <script>
         const lyricsBox = document.getElementById("lyrics-box");
+        const audio = document.getElementById("audio");
 
-        fetch("/lyrics")
+        fetch("lyrics.json")
             .then((response) => response.json())
             .then((lyrics) => {
-                let startTime = new Date().getTime();
-                lyrics.forEach((lyric) => {
-                    setTimeout(() => {
-                        let text = lyric.text
+                let currentIndex = 0;
+                audio.addEventListener("timeupdate", () => {
+                    const currentTime = audio.currentTime;
+                    if (
+                        currentIndex < lyrics.length &&
+                        currentTime >= lyrics[currentIndex].time
+                    ) {
+                        const line = lyrics[currentIndex].text
                             .replace(/sex/gi, '<span class="highlight-sex">sex</span>')
                             .replace(/blue/gi, '<span class="highlight-blue">blue</span>');
-                        lyricsBox.innerHTML = text;
-                    }, lyric.time * 1000);
+                        lyricsBox.innerHTML = line;
+                        currentIndex++;
+                    }
                 });
             });
     </script>
 </body>
 </html>
+
