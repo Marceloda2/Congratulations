@@ -18,6 +18,8 @@
         #lyrics-box {
             text-align: center;
             max-width: 600px;
+            font-size: 20px;
+            line-height: 1.5;
         }
         .highlight-sex {
             color: red;
@@ -32,28 +34,36 @@
     <audio id="audio" src="Mac Miller - Congratulations (feat. Bilal).mp3" autoplay></audio>
 
     <script>
+        const lyrics = [
+            { time: 0, text: "Where are you? 🌍" },
+            { time: 1.7, text: "Oh-oh 🎶" },
+            { time: 8.3, text: "Oh 💭" },
+            { time: 12.4, text: "\"The Divine Feminine, \" an album by Mac Miller ✨" },
+            { time: 15.9, text: "Oh-oh 🌙" },
+            { time: 21.2, text: "Love, love, love, love, love, love <span class='highlight-sex'>sex</span>" },
+            { time: 39.9, text: "This sun don't shine when I'm alone 🌞" },
+            { time: 49.9, text: "I lose my mind and I lose control 🌀" },
+            { time: 53.9, text: "I see your eyes look through my soul 👁️‍🗨️" },
+            { time: 57.8, text: "Don't be surprised this all I know 🌟" },
+            { time: 65.1, text: "You remind me of the color <span class='highlight-blue'>blue</span> 💙" },
+            { time: 70.1, text: "Girl, I'm so in love with you 💖" },
+        ];
+
         const lyricsBox = document.getElementById("lyrics-box");
         const audio = document.getElementById("audio");
 
-        fetch("lyrics.json")
-            .then((response) => response.json())
-            .then((lyrics) => {
-                let currentIndex = 0;
-                audio.addEventListener("timeupdate", () => {
-                    const currentTime = audio.currentTime;
-                    if (
-                        currentIndex < lyrics.length &&
-                        currentTime >= lyrics[currentIndex].time
-                    ) {
-                        const line = lyrics[currentIndex].text
-                            .replace(/sex/gi, '<span class="highlight-sex">sex</span>')
-                            .replace(/blue/gi, '<span class="highlight-blue">blue</span>');
-                        lyricsBox.innerHTML = line;
-                        currentIndex++;
-                    }
-                });
-            });
+        let currentIndex = 0;
+
+        audio.addEventListener("timeupdate", () => {
+            const currentTime = audio.currentTime;
+            if (
+                currentIndex < lyrics.length &&
+                currentTime >= lyrics[currentIndex].time
+            ) {
+                lyricsBox.innerHTML = lyrics[currentIndex].text;
+                currentIndex++;
+            }
+        });
     </script>
 </body>
 </html>
-
